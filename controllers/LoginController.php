@@ -13,14 +13,18 @@ class loginController{
         echo "chau";
     }
 
-    public static function olvide(){
-        echo "upsi";
+    public static function olvide(Router $router){
+        $router->render('auth/olvide', [
+
+        ]);
     }
 
     public static function recuperar(){
         echo "desde recuperar";
     }
-    public static function crear_cuenta(){
-        echo "desde crear";
+    public static function crear(Router $router){
+        $router->render('auth/crear-cuenta', [
+
+        ]);
     }
 }   
