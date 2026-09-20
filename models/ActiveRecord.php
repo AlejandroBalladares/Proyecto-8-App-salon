@@ -1,5 +1,9 @@
 <?php
 namespace Model;
+/**
+ * @property int $id
+
+ */
 class ActiveRecord {
 
     // Base DE DATOS
