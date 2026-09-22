@@ -27,7 +27,7 @@
     </div>
     <div class="campo">
         <label for="contraseña">Contraseña</label>
-        <input type="password" id="contraseña" name="contraseña" placeholder="Tu contraseña">
+        <input type="password" id="password" name="password" placeholder="Tu contraseña">
     </div>
 
     <input type="submit" value="Crear Cuenta" class="boton">
