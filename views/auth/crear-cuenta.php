@@ -1,6 +1,4 @@
-<?php
-    /** @var Model\Usuario $usuario */
-?>
+<?php /** @var Model\Usuario $usuario */ ?>
 
 <h1 class="nombre-pagina">Crear cuenta</h1>
 <p class="descripcion-pagina"> Llene el siguiente formulario para crear una cuenta</p>
