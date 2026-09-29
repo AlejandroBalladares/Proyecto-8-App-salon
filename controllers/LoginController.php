@@ -68,6 +68,7 @@ class loginController{
                     //generar un token
                     $usuario->generarToken();
                     $usuario->guardar();
+                    //Enviar el mail al usuario
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
                     $email->enviarInstrucciones();
                     Usuario::setAlerta('exito','Revisa tu mail');
@@ -85,8 +86,40 @@ class loginController{
         ]);
     }
 
-    public static function recuperar(){
-        echo "desde recuperar";
+    public static function recuperar(Router $router){
+        $alertas = [];
+        $error = false;
+
+        $token = s($_GET['token']);
+
+        //buscar token en la base de datos
+        /** @var Usuario $usuario */
+        $usuario = Usuario::where('token', $token);
+        if(empty($usuario)){
+            Usuario::setAlerta('error','Usuario no valido');
+            $error = true;
+        }
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            //leer el nuevo password y guardarlo
+            $password = new Usuario($_POST);
+            $alertas = $password->validarPassword();
+            if(empty($alertas)){
+                //cambiar la contraseña
+                $usuario->password = $password->password;
+                $usuario->hashPassword();
+                $usuario->token = "0";
+                $resultado = $usuario->guardar();
+                if($resultado){
+                    header('Location: /');
+                }
+            }
+        }
+        $alertas = Usuario::getAlertas();
+        $router->render('auth/recuperar', [
+            'alertas'=>$alertas,
+            'error'=>$error,
+        ]);
     }
     public static function crear(Router $router){
         $usuario = new Usuario;
