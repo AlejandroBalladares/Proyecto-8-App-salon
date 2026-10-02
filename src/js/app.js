@@ -1,4 +1,6 @@
 let paso = 1;
+let pasoInicial = 1;
+let pasoFinal = 3;
 
 document.addEventListener('DOMContentLoaded', function(){
     iniciarApp();
@@ -7,6 +9,9 @@ document.addEventListener('DOMContentLoaded', function(){
 function iniciarApp(){
     mostrarSeccion();
     tabs(); // cambia el step cuando se presionan los tabs
+    botonesPaginador(); //agrega o quita los botones
+    paginaSiguiente();
+    paginaAnterior();
 }
 
 function tabs(){
@@ -16,6 +21,9 @@ function tabs(){
             console.log(e.target.dataset);
             paso = parseInt(e.target.dataset.paso);
             mostrarSeccion();
+            botonesPaginador();
+            paginaSiguiente();
+            paginaAnterior();
         });
     })
 }
@@ -41,4 +49,41 @@ function mostrarSeccion(){
     }
     const tab = document.querySelector(`[data-paso="${paso}"]`);
     tab.classList.add('actual');
+}
+
+function botonesPaginador(){
+    const paginaSiguiente = document.querySelector("#siguiente");
+    const paginaAnterior = document.querySelector("#anterior");
+
+    if(paso === 1){
+        paginaAnterior.classList.add('ocultar');
+        paginaSiguiente.classList.remove('ocultar');
+    }
+    else if (paso === 3){
+        paginaAnterior.classList.remove('ocultar');
+        paginaSiguiente.classList.add('ocultar');
+    }
+    else{
+        paginaAnterior.classList.remove('ocultar');
+        paginaSiguiente.classList.remove('ocultar');
+    }
+    mostrarSeccion();
+}
+
+function paginaAnterior(){
+    const paginaAnterior = document.querySelector("#anterior");
+    paginaAnterior.addEventListener('click', function(){
+        if(paso <= pasoInicial) return;
+        paso--;
+        botonesPaginador();
+    })
+}
+
+function paginaSiguiente(){
+    const paginaSiguiente = document.querySelector("#siguiente");
+    paginaSiguiente.addEventListener('click', function(){
+        if(paso >= pasoFinal) return;
+        paso++;
+        botonesPaginador();
+    })
 }
