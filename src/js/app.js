@@ -21,6 +21,9 @@ function iniciarApp(){
     paginaAnterior();
 
     consultarAPI(); //consulta la API en el backen de PHP
+    
+    nombreCliente();
+    seleccionarFecha();
 }
 
 function tabs(){
@@ -139,7 +142,7 @@ function mostrarServicios(servicios){
 function seleccionarServicio(servicio){
     const { id } = servicio;
     const { servicios } = cita;
-    
+
     //identificar al elemento que le doy click
     const divServicio = document.querySelector(`[data-id-servicio="${id}"]`);
     
@@ -151,7 +154,44 @@ function seleccionarServicio(servicio){
         cita.servicios = [...servicios, servicio];
         divServicio.classList.add('seleccionado');
     }
-    
-    
+}
 
+function nombreCliente(){
+    cita.nombre = document.querySelector('#nombre').value;
+}
+
+function seleccionarFecha(){
+    const inputFecha = document.querySelector('#fecha');
+    inputFecha.addEventListener('input', function(e){
+        const dia = new Date(e.target.value).getUTCDay();
+        if([6, 0].includes(dia)){
+            e.target.value = '';
+            mostrarAlerta('Fines de semana no abrimos', 'error');
+        }
+        else{
+            console.log('excelente');
+            cita.fecha = inputFecha.value;
+        }
+        
+    });
+}
+
+function mostrarAlerta(mensaje, tipo){
+    //previene multiples alertas
+    const alertaPrevia = document.querySelector('.alerta');
+    if(alertaPrevia) return;
+
+    //creamos la alerta
+    const alerta = document.createElement('DIV');
+    alerta.textContent = mensaje;
+    alerta.classList.add('alerta');
+    alerta.classList.add(tipo);
+
+    const formulario = document.querySelector('.formulario');
+    formulario.appendChild(alerta);
+
+    //eliminamos la alerta después de 3 segundos
+    setTimeout(()=>{
+        alerta.remove();
+    }, 3000);
 }
