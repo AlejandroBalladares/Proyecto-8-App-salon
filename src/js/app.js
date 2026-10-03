@@ -24,6 +24,7 @@ function iniciarApp(){
     
     nombreCliente();
     seleccionarFecha();
+    seleccionarHora();
 }
 
 function tabs(){
@@ -174,6 +175,21 @@ function seleccionarFecha(){
         }
         
     });
+}
+
+function seleccionarHora(){
+    const inputHora = document.querySelector('#hora');
+    inputHora.addEventListener('input', function(e){
+        const horaCita = e.target.value;
+        const hora = horaCita.split(":")[0];
+        if(hora < 10 || hora >18){
+            e.target.value = '';
+            mostrarAlerta('Hora no valida, abrimos de 10 a 18', 'error')
+        }
+        else{
+            cita.hora = e.target.value;
+        }
+    })
 }
 
 function mostrarAlerta(mensaje, tipo){
