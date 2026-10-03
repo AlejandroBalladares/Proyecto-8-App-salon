@@ -2,6 +2,13 @@ let paso = 1;
 let pasoInicial = 1;
 let pasoFinal = 3;
 
+const cita = {
+    nombre : '',
+    fecha: '',
+    hora: '',
+    servicios: []
+}
+
 document.addEventListener('DOMContentLoaded', function(){
     iniciarApp();
 });
@@ -116,6 +123,9 @@ function mostrarServicios(servicios){
         const servicioDiv = document.createElement('DIV');
         servicioDiv.classList.add('servicio');
         servicioDiv.dataset.idServicio = id;
+        servicioDiv.onclick = function(){
+            seleccionarServicio(servicio);
+        };
         
         servicioDiv.appendChild(nombreServicio);
         servicioDiv.appendChild(precioServicio);
@@ -124,4 +134,24 @@ function mostrarServicios(servicios){
         
         
     })
+}
+
+function seleccionarServicio(servicio){
+    const { id } = servicio;
+    const { servicios } = cita;
+    
+    //identificar al elemento que le doy click
+    const divServicio = document.querySelector(`[data-id-servicio="${id}"]`);
+    
+    if(servicios.some(agregado => agregado.id === id)){
+        cita.servicios = servicios.filter(agregado => agregado.id !== id);
+        divServicio.classList.remove('seleccionado');
+    }   
+    else{
+        cita.servicios = [...servicios, servicio];
+        divServicio.classList.add('seleccionado');
+    }
+    
+    
+
 }
