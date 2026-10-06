@@ -25,6 +25,8 @@ function iniciarApp(){
     nombreCliente();
     seleccionarFecha();
     seleccionarHora();
+
+    mostrarResumen();
 }
 
 function tabs(){
@@ -35,8 +37,6 @@ function tabs(){
             paso = parseInt(e.target.dataset.paso);
             mostrarSeccion();
             botonesPaginador();
-            paginaSiguiente();
-            paginaAnterior();
         });
     })
 }
@@ -75,6 +75,7 @@ function botonesPaginador(){
     else if (paso === 3){
         paginaAnterior.classList.remove('ocultar');
         paginaSiguiente.classList.add('ocultar');
+        mostrarResumen();
     }
     else{
         paginaAnterior.classList.remove('ocultar');
@@ -167,10 +168,10 @@ function seleccionarFecha(){
         const dia = new Date(e.target.value).getUTCDay();
         if([6, 0].includes(dia)){
             e.target.value = '';
-            mostrarAlerta('Fines de semana no abrimos', 'error');
+            mostrarAlerta('Fines de semana no abrimos', 'error', '.formulario');
         }
         else{
-            console.log('excelente');
+            //console.log('excelente');
             cita.fecha = inputFecha.value;
         }
         
@@ -184,7 +185,7 @@ function seleccionarHora(){
         const hora = horaCita.split(":")[0];
         if(hora < 10 || hora >18){
             e.target.value = '';
-            mostrarAlerta('Hora no valida, abrimos de 10 a 18', 'error')
+            mostrarAlerta('Hora no valida, abrimos de 10 a 18', 'error', '.formulario')
         }
         else{
             cita.hora = e.target.value;
@@ -192,10 +193,12 @@ function seleccionarHora(){
     })
 }
 
-function mostrarAlerta(mensaje, tipo){
+function mostrarAlerta(mensaje, tipo, elemento, desaparece = true){
     //previene multiples alertas
     const alertaPrevia = document.querySelector('.alerta');
-    if(alertaPrevia) return;
+    if(alertaPrevia) {
+        alertaPrevia.remove();
+    };
 
     //creamos la alerta
     const alerta = document.createElement('DIV');
@@ -203,11 +206,74 @@ function mostrarAlerta(mensaje, tipo){
     alerta.classList.add('alerta');
     alerta.classList.add(tipo);
 
-    const formulario = document.querySelector('.formulario');
-    formulario.appendChild(alerta);
+    const e = document.querySelector(elemento);
+    e.appendChild(alerta);
 
-    //eliminamos la alerta después de 3 segundos
-    setTimeout(()=>{
-        alerta.remove();
-    }, 3000);
+    if(desaparece){
+        //eliminamos la alerta después de 3 segundos
+        setTimeout(()=>{
+            alerta.remove();
+        }, 3000);
+    }
+    
+}
+
+function mostrarResumen(){
+    const resumen = document.querySelector('.contenido-resumen');
+    
+    while(resumen.firstChild){
+        resumen.removeChild(resumen.firstChild);
+    }
+
+    if(Object.values(cita).includes('') || cita.servicios.length === 0){
+        mostrarAlerta('Faltan datos de servicios, fecha u hora', 'error', '.contenido-resumen', false)
+        return;
+    }
+    
+    const {nombre, fecha, hora, servicios } = cita;
+    
+    const headingServicios = document.createElement('H3');
+    headingServicios.textContent = 'Resumen de servicios';
+    resumen.appendChild(headingServicios);
+
+    servicios.forEach(servicio => {
+        const {precio, nombre} = servicio;
+
+        const contenedorServicio = document.createElement('DIV');
+        contenedorServicio.classList.add('contenedor-servicio');
+
+        const textoServicio = document.createElement('P');
+        textoServicio.textContent = nombre;
+
+        const precioServicio = document.createElement('P');
+        precioServicio.innerHTML = `<span>Precio: </span> $${precio}`;
+
+        contenedorServicio.appendChild(textoServicio);
+        contenedorServicio.appendChild(precioServicio);
+        
+        resumen.appendChild(contenedorServicio);
+
+    });
+    
+    const headingCita = document.createElement('H3');
+    headingCita.textContent = 'Resumen de citas';
+    resumen.appendChild(headingCita);
+
+
+    const nombreCliente = document.createElement('P');
+    nombreCliente.innerHTML = `<span>Nombre: </span> ${nombre}`;
+    
+    const fechaCita = document.createElement('P');
+    fechaCita.innerHTML = `<span>Fecha: </span> ${fecha}`;
+    
+    const horaCita = document.createElement('P');
+    horaCita.innerHTML = `<span>Hora: </span> ${hora} horas`;
+    
+    resumen.appendChild(nombreCliente);
+    resumen.appendChild(fechaCita);
+    resumen.appendChild(horaCita);
+
+
+
+
 }
