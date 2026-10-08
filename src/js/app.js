@@ -104,7 +104,7 @@ function paginaSiguiente(){
 
 async function consultarAPI(){
     try{
-        const url = 'http://localhost:3000/api/servicios';
+        const url = 'http://127.0.0.1:3000/api/servicios';
         const resultado = await fetch(url);
         const servicios = await resultado.json();
         mostrarServicios(servicios);
@@ -278,11 +278,39 @@ function mostrarResumen(){
     const horaCita = document.createElement('P');
     horaCita.innerHTML = `<span>Hora: </span> ${hora} horas`;
     
+    //boton para reservar la cita
+    const botonReservar = document.createElement('BUTTON');
+    botonReservar.classList.add('boton');
+    botonReservar.textContent = 'Reservar cita';
+    botonReservar.onclick = reservarCita;
+
     resumen.appendChild(nombreCliente);
     resumen.appendChild(fechaCita);
     resumen.appendChild(horaCita);
+    resumen.appendChild(botonReservar);
+}
+
+async function reservarCita(){
+    const {nombre, fecha, hora, servicios} = cita;
+    const idServicios = servicios.map(servicio => servicio.id);
+
+    const datos = new FormData();
+    datos.append('nombre', nombre);
+    datos.append('fecha', fecha);
+    datos.append('hora', hora);
+    datos.append('servicios', idServicios);
 
 
+    //Peticion hacia la API
+    const url = 'http://127.0.0.1:3000/api/citas';
+    const respuesta = await fetch(url, {
+        method: 'POST',
+        body: datos
+    });
 
-
+    const resultado = await respuesta.json();
+    console.log(resultado);
+    
+    //Forma de mostrar los datos en el console log
+    //console.log([...datos]);
 }
