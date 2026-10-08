@@ -33,7 +33,7 @@ class Email{
         $mail->CharSet = 'UTF-8';
         $contenido = "<html>";
         $contenido .= "<p><strong>Hola " . $this->nombre . "</strong> has creado tu cuenta en App salon, solo debes confirmarla presionando el siguiente enlace</p>";
-        $contenido .= "<p>Presiona Aqui: <a href= 'http://localhost:3000/confirmar-cuenta?token=" . $this->token . "'> Confirmar cuenta </a> </p>";
+        $contenido .= "<p>Presiona Aqui: <a href= 'http://127.0.0.1:3000/confirmar-cuenta?token=" . $this->token . "'> Confirmar cuenta </a> </p>";
         $contenido .= "<p>Si no solicitaste esta cuenta, puedes ignorar este mensaje </p>";
         $contenido .= "</html>";
 
@@ -57,7 +57,7 @@ class Email{
         $mail->CharSet = 'UTF-8';
         $contenido = "<html>";
         $contenido .= "<p><strong>Hola " . $this->nombre . "</strong> has solicitado reestablecer tu password, sigue el siguiente enlace para hacerlo</p>";
-        $contenido .= "<p>Presiona Aqui: <a href= 'http://localhost:3000/recuperar?token=" . $this->token . "'> Restablecer password </a> </p>";
+        $contenido .= "<p>Presiona Aqui: <a href= 'http://127.0.0.1:3000/recuperar?token=" . $this->token . "'> Restablecer password </a> </p>";
         $contenido .= "<p>Si no solicitaste esta cuenta, puedes ignorar este mensaje </p>";
         $contenido .= "</html>";
 
