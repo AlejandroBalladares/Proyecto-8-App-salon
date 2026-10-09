@@ -3,6 +3,7 @@ let pasoInicial = 1;
 let pasoFinal = 3;
 
 const cita = {
+    id: '',
     nombre : '',
     fecha: '',
     hora: '',
@@ -23,6 +24,7 @@ function iniciarApp(){
     consultarAPI(); //consulta la API en el backen de PHP
     
     nombreCliente();
+    idCliente();
     seleccionarFecha();
     seleccionarHora();
 
@@ -162,6 +164,10 @@ function nombreCliente(){
     cita.nombre = document.querySelector('#nombre').value;
 }
 
+function idCliente(){
+    cita.id = document.querySelector('#id').value;
+}
+
 function seleccionarFecha(){
     const inputFecha = document.querySelector('#fecha');
     inputFecha.addEventListener('input', function(e){
@@ -291,25 +297,47 @@ function mostrarResumen(){
 }
 
 async function reservarCita(){
-    const {nombre, fecha, hora, servicios} = cita;
+    const {id , fecha, hora, servicios} = cita;
     const idServicios = servicios.map(servicio => servicio.id);
 
     const datos = new FormData();
-    datos.append('nombre', nombre);
     datos.append('fecha', fecha);
     datos.append('hora', hora);
+    datos.append('usuarioId', id);
     datos.append('servicios', idServicios);
 
 
-    //Peticion hacia la API
-    const url = 'http://127.0.0.1:3000/api/citas';
-    const respuesta = await fetch(url, {
-        method: 'POST',
-        body: datos
-    });
+    try {
+        //Peticion hacia la API
+        const url = 'http://127.0.0.1:3000/api/citas';
+        const respuesta = await fetch(url, {
+            method: 'POST',
+            body: datos
+        });
 
-    const resultado = await respuesta.json();
-    console.log(resultado);
+        const resultado = await respuesta.json();
+        console.log(resultado.resultado);
+
+        if(resultado.resultado){
+            Swal.fire({
+                icon: "success",
+                title: "Cita creada",
+                text: "Tu cita fue creada correctamente",
+                button: 'OK'
+            }).then(() =>{
+                setTimeout(()=>{
+                    window.location.reload();
+                    }, 2000)
+                }) 
+        }
+        
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Hubo un error al guardar la cita",
+            });
+    }
     
     //Forma de mostrar los datos en el console log
     //console.log([...datos]);
