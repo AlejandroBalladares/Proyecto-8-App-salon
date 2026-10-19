@@ -1,10 +1,7 @@
 <?php /** @var string $nombre */ ?>
 <?php /** @var string $id */ ?>
 
-<div class="barra">
-    <p>Hola <?php echo $nombre ?? '' ?></p>
-    <a href="/logout" class="boton">Cerrar sesion</a>
-</div>
+<?php include_once __DIR__. '/..templates/barra.php' ?>;
 
 <h1 class="nombre-pagina">Crear cita</h1>
 <p class="descripcion-pagina">Elige tus servicios a continuacion</p>
