@@ -1,4 +1,5 @@
 <?php /** @var Object[] $citas */ ?>
+<?php /** @var string $fecha */ ?>
 
 <h1 class="nomre-pagina">Panel de Control</h1>
 
@@ -9,7 +10,7 @@
     <form class="formulario">
         <div class="campo">
             <label for="fecha">Fecha</label>
-            <input type="date" id="fecha" name="fecha">
+            <input type="date" id="fecha" name="fecha", value="<?php echo $fecha ?>">
         </div>
     </form>
 </div>
@@ -18,10 +19,10 @@
     <ul class="citas">
         
             <?php
-            //debuguear($citas);
-            $idCita = 0;
-            foreach($citas as $cita) {
-                if($idCita !== $cita->id){
+                $idCita = 0;
+                foreach($citas as $key => $cita) {
+                    if($idCita !== $cita->id){
+                        $total = 0;
             ?>
             <li>
                     <p>ID: <span> <?php echo $cita->id; ?></span></p>
@@ -32,11 +33,27 @@
                     <h3>Servicios</h3>
             <?php
                 $idCita = $cita->id;
-                } //fin del if ?>
+                } //fin del if 
+                    $total += $cita->precio; 
+            ?>
 
                 <p class="servicio"> <?php echo $cita->servicio . " " . $cita->precio; ?></p>
 
-            </li>
-            <?php } //fin del foreach ?>
+            <?php 
+                $actual = $cita->id;
+                $proximo = $citas[$key + 1]->id ?? 0;
+
+                if(esUltimo($actual, $proximo)){
+            ?>
+                <p class="total">Total: <span>$ <?php echo $total; ?></span></p>
+            
+            <?php        
+                }
+            } //fin del foreach 
+            ?>
     </ul>
 </div>
+
+<?php 
+    $script = "<script src='build/js/buscador.js'> </script>";
+?>
