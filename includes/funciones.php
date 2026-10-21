@@ -13,6 +13,9 @@ function s($html) : string {
     return $s;
 }
 
+function esUltimo(string $actual, string $proximo){
+    return $actual !== $proximo;
+}
 //Funcione que revisa que el usuario este autenticado
 function isAuth(): void{
     if(!isset($_SESSION['login'])){
