@@ -1,7 +1,7 @@
 <?php /** @var string $nombre */ ?>
 <?php /** @var string $id */ ?>
 
-<?php include_once __DIR__. '/..templates/barra.php' ?>;
+<?php include_once __DIR__. '/../templates/barra.php' ?>
 
 <h1 class="nombre-pagina">Crear cita</h1>
 <p class="descripcion-pagina">Elige tus servicios a continuacion</p>
