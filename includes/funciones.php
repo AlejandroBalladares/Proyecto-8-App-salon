@@ -25,6 +25,6 @@ function isAuth(): void{
 
 function isAdmin(){
     if(!$_SESSION['admin']){
-        header('Loction: /');
+        header('Location: /');
     }
 }
