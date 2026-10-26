@@ -42,9 +42,9 @@ $router->post('/api/eliminar', [APIController::class, 'eliminar']);
 $router->get('/servicios', [ServicioController::class, 'index']);
 $router->get('/servicios/crear', [ServicioController::class, 'crear']);
 $router->post('/servicios/crear', [ServicioController::class, 'crear']);
-$router->get('/servicios/actualizar', [APIController::class, 'actualizar']);
-$router->post('/servicios/actualizar', [APIController::class, 'actualizar']);
-$router->post('/servicios/eliminar', [APIController::class, 'eliminar']);
+$router->get('/servicios/actualizar', [ServicioController::class, 'actualizar']);
+$router->post('/servicios/actualizar', [ServicioController::class, 'actualizar']);
+$router->post('/servicios/eliminar', [ServicioController::class, 'eliminar']);
 
 
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
