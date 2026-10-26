@@ -7,10 +7,11 @@ use MVC\Router;
 
 class ServicioController{
     public static function index(Router $router){
-
+        $servicios = Servicio::all();
         $nombre = $_SESSION['nombre'];
         $router->render('servicios/index', [
             'nombre'=>$nombre,
+            'servicios'=>$servicios,
         ]);
     }
 
