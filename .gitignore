@@ -2,3 +2,4 @@
 *build
 *imagenes
 /vendor/
+includes/.env
